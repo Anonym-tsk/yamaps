@@ -10,17 +10,107 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=((((n%10)==1)&&((n%100)!=11))?(0):(((((n%10)>=2)&&((n%10)<=4))&&(((n%100)<10)||((n%100)>=20)))?(1):2));\n"
 
-msgid "Yandex map"
+msgid "Yandex maps"
 msgstr "Яндекс.Карты"
 
-msgid "X coordinate must be a float"
-msgstr "Координата X должна быть дробным числом"
+msgid "Provide Yandex map field for display map on your pages"
+msgstr "Позволяет добавлять Яндекс.Карты на страницы сайта"
 
-msgid "Y coordinate must be a float"
-msgstr "Координата Y должна быть дробным числом"
+msgid "Yandex"
+msgstr "Яндекс"
 
-msgid "Zoom must be an integer"
-msgstr "Масштаб должен быть целым числом"
+msgid "Coordinates"
+msgstr "Координаты"
+
+msgid "Type"
+msgstr "Тип"
+
+msgid "Placemarks"
+msgstr "Маркеры"
+
+msgid "Lines"
+msgstr "Линии"
+
+msgid "Polygons"
+msgstr "Многоугольники"
+
+msgid "Routes"
+msgstr "Маршруты"
+
+msgid "Terms of service «API Yandex.Maps»"
+msgstr "Пользовательское соглашение сервиса «API Яндекс.Карты»"
+
+msgid "Yandex.Map"
+msgstr "Яндекс.Карта"
+
+msgid "Dynamic"
+msgstr "Динамическая"
+
+msgid "Static"
+msgstr "Статическая"
+
+msgid "Opacity"
+msgstr "Прозрачность"
+
+msgid "Stroke width"
+msgstr "Толщина линии"
+
+msgid "Very bold"
+msgstr "Очень жирная"
+
+msgid "Bold"
+msgstr "Жирная"
+
+msgid "Normal"
+msgstr "Средняя"
+
+msgid "Slim"
+msgstr "Тонкая"
+
+msgid "Very slim"
+msgstr "Очень тонкая"
+
+msgid "Delete"
+msgstr "Удалить"
+
+msgid "Save"
+msgstr "Сохранить"
+
+msgid "Line color"
+msgstr "Цвет линии"
+
+msgid "Balloon text"
+msgstr "Подсказка"
+
+msgid "Drawing lines"
+msgstr "Рисование линий"
+
+msgid "Placemark text"
+msgstr "Текст маркера"
+
+msgid "Color"
+msgstr "Цвет"
+
+msgid "Search on the map"
+msgstr "Найти на карте"
+
+msgid "Not found"
+msgstr "Не найдено"
+
+msgid "Setting points"
+msgstr "Установка точек"
+
+msgid "Polygon color"
+msgstr "Цвет многоугольника"
+
+msgid "Drawing polygons"
+msgstr "Рисование многоугольников"
+
+msgid "Laying routes"
+msgstr "Прокладывание маршрутов"
+
+msgid "Yandex map"
+msgstr "Яндекс.Карта"
 
 msgid "Show controls"
 msgstr "Показывать элементы управления"
@@ -42,12 +132,3 @@ msgstr "Показывать пробки: @traffic"
 
 msgid "Map size: @width x @height"
 msgstr "Размер карты: @width x @height"
-
-msgid "X coordinate"
-msgstr "Координата X"
-
-msgid "Y coordinate"
-msgstr "Координата Y"
-
-msgid "Zoom"
-msgstr "Масштаб"
