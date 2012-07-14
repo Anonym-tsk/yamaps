@@ -39,3 +39,18 @@ function yamaps_field_schema($field) {
     'indexes' => array(),
   );
 }
+
+/**
+ * Implements hook_uninstall().
+ */
+function yamaps_uninstall() {
+  variable_del('yamaps_block_controls');
+  variable_del('yamaps_block_traffic');
+  variable_del('yamaps_block_width');
+  variable_del('yamaps_block_height');
+  variable_del('yamaps_block_coords');
+  variable_del('yamaps_block_type');
+  variable_del('yamaps_block_placemarks');
+  variable_del('yamaps_block_lines');
+  variable_del('yamaps_block_polygons');
+}

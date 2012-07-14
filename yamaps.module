@@ -10,6 +10,7 @@
  */
 module_load_include('inc', 'yamaps', 'inc/yamaps.formatter');
 module_load_include('inc', 'yamaps', 'inc/yamaps.widget');
+module_load_include('inc', 'yamaps', 'inc/yamaps.block');
 
 /**
  * Implements hook_field_info().
