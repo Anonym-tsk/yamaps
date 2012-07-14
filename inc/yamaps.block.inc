@@ -51,7 +51,7 @@ function yamaps_block_configure($delta = '') {
     );
     $element = array(
       '#delta' => 'block-' . $delta,
-      '#required' => TRUE,
+      '#required' => FALSE,
       '#value' => array(
         'coords' => variable_get('yamaps_block_coords', NULL),
         'type' => variable_get('yamaps_block_type', 'yandex#map'),
