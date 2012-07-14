@@ -132,3 +132,6 @@ msgstr "Показывать пробки: @traffic"
 
 msgid "Map size: @width x @height"
 msgstr "Размер карты: @width x @height"
+
+msgid "Error found"
+msgstr "Возникла ошибка"

@@ -45,7 +45,7 @@
             if (!route) {
               firstPoint = secondPoint = null;
             }
-            alert("Возникла ошибка: " + error.message);
+            alert(Drupal.t('Error found') + ": " + error.message);
           }
         );
       };
