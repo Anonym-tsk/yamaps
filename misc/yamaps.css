@@ -1,0 +1,79 @@
+.ymaps-map label {
+  display: inline;
+}
+.ymaps-map .yamaps-b-select_traffic_folded .yamaps-b-traffic-panel {
+  padding: 0;
+}
+.ymaps-map .yamaps-balloon {
+  padding: 2px 10px;
+}
+.ymaps-map .yamaps-balloon label {
+  font-size: 12px;
+  font-weight: normal;
+  display: block;
+  font-style: italic;
+  color: #666;
+}
+.ymaps-map .yamaps-balloon label:after {
+  content: ":";
+}
+.ymaps-map .yamaps-balloon input {
+  border: 1px solid #CCC;
+  padding: 3px;
+  margin: 0;
+  font-size: 12px;
+  width: 95%;
+  border-radius: 3px;
+}
+.ymaps-map .yamaps-balloon .form-element {
+  overflow: hidden;
+  margin: 0 0 7px 0;
+}
+.ymaps-map .yamaps-balloon .actions {
+  overflow: hidden;
+  margin: 10px 0 0 0;
+  line-height: 20px;
+}
+.ymaps-map .yamaps-balloon .actions #deleteButton {
+  float: left;
+}
+.ymaps-map .yamaps-balloon .actions #saveButton {
+  float: right;
+  width: 90px;
+  height: 14px;
+  background: #FFF;
+  height: 20px;
+  line-height: 12px;
+}
+
+.ymaps-map .yamaps-balloon .yamaps-colors .yamaps-color {
+  padding: 1px;
+  margin: 0;
+  border: none;
+  float: left;
+  cursor: pointer;
+}
+.ymaps-map .yamaps-balloon .yamaps-colors .yamaps-color div {
+  width: 10px;
+  height: 10px;
+  overflow: hidden;
+  text-indent: 9999px;
+  border: 1px solid white;
+}
+.ymaps-map .yamaps-balloon .yamaps-colors .yamaps-color-active {
+  background-color: #444;
+}
+
+#yamaps-search-form {
+  margin: 5px 0;
+  overflow: hidden;
+  display: block;
+}
+#yamaps-search-form input.form-text {
+  width: 80%;
+  margin: 0 10px 0 0;
+}
+#yamaps-search-form input.form-submit {
+  width: 15%;
+  margin: 0;
+}

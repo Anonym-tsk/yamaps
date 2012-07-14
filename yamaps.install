@@ -1,0 +1,33 @@
+<?php
+
+function yamaps_field_schema($field) {
+  return array(
+    'columns' => array(
+      'coords' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'type' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => 'yandex#map',
+      ),
+      'placemarks' => array(
+        'type' => 'text',
+        'not null' => TRUE,
+      ),
+      'lines' => array(
+        'type' => 'text',
+        'not null' => TRUE,
+      ),
+      'polygons' => array(
+        'type' => 'text',
+        'not null' => TRUE,
+      ),
+    ),
+    'indexes' => array(),
+  );
+}

@@ -1,0 +1,125 @@
+<?php
+
+module_load_include('inc', 'yamaps', 'inc/yamaps.formatter');
+module_load_include('inc', 'yamaps', 'inc/yamaps.widget');
+
+function yamaps_field_info() {
+  return array(
+    'field_yamaps' => array(
+      'label' => t('Yandex map'),
+      'default_widget' => 'yamaps_field',
+      'default_formatter' => 'field_yamaps_formatter',
+    ),
+  );
+}
+
+function yamaps_field_is_empty($item, $field) {
+  return empty($item['coords']);
+}
+
+function yamaps_element_info() {
+  $elements = array();
+  $elements['yamaps_field'] =  array(
+    '#input' => TRUE,
+    '#process' => array('yamaps_field_process'),
+    '#theme_wrappers' => array('form_element'),
+  );
+  return $elements;
+}
+
+function yamaps_field_process($element, $form_state, $complete_form) {
+  $coords = isset($element['#value']['coords']) ? $element['#value']['coords'] : NULL;
+  $coordsArray = drupal_json_decode($coords);
+  $type = isset($element['#value']['type']) ? $element['#value']['type'] : 'yandex#map';
+  $placemarks = isset($element['#value']['placemarks']) ? $element['#value']['placemarks'] : NULL;
+  $placemarksArray = drupal_json_decode($placemarks);
+  $lines = isset($element['#value']['lines']) ? $element['#value']['lines'] : NULL;
+  $linesArray = drupal_json_decode($lines);
+  $polygons = isset($element['#value']['polygons']) ? $element['#value']['polygons'] : NULL;
+  $polygonsArray = drupal_json_decode($polygons);
+
+  $id = 'ymap-'.$element['#delta'].'-edit';
+  $map = array(
+    'init' => array(
+      'center' => $coordsArray['center'],
+      'zoom' => $coordsArray['zoom'],
+      'type' => $type,
+      'behaviors' => array('scrollZoom', 'dblClickZoom', 'drag'),
+    ),
+    'controls' => 1,
+    'traffic' => 0,
+    'placemarks' => $placemarksArray,
+    'lines' => $linesArray,
+    'polygons' => $polygonsArray,
+    'edit' => TRUE,
+  );
+
+  drupal_add_js(array('yamaps' => array($id => $map)), 'setting');
+  drupal_add_library('yamaps', 'yamaps.full');
+
+  $element['map'] = array(
+    '#markup' => '<div id="'.$id.'" style="width:100%;height:450px"></div>'
+  );
+  $element['coords'] = array(
+    '#type' => 'hidden',
+    '#title' => t('Coordinates'),
+    '#default_value' => $coords,
+    '#required' => $element['#required'],
+    '#attributes' => array('class' => array('field-yamaps-coords')),
+  );
+  $element['type'] = array(
+    '#type' => 'hidden',
+    '#title' => t('Type'),
+    '#default_value' => $type,
+    '#attributes' => array('class' => array('field-yamaps-type')),
+  );
+  $element['placemarks'] = array(
+    '#type' => 'hidden',
+    '#title' => t('Placemarks'),
+    '#default_value' => $placemarks,
+    '#attributes' => array('class' => array('field-yamaps-placemarks')),
+  );
+  $element['lines'] = array(
+    '#type' => 'hidden',
+    '#title' => t('Lines'),
+    '#default_value' => $lines,
+    '#attributes' => array('class' => array('field-yamaps-lines')),
+  );
+  $element['polygons'] = array(
+    '#type' => 'hidden',
+    '#title' => t('Polygons'),
+    '#default_value' => $polygons,
+    '#attributes' => array('class' => array('field-yamaps-polygons')),
+  );
+
+  $element['#description'] = l('http://api.yandex.ru/maps/tools/getlonglat/', 'http://api.yandex.ru/maps/tools/getlonglat/');
+
+  return $element;
+}
+
+function yamaps_library() {
+  global $language;
+  $path = drupal_get_path('module', 'yamaps') . '/misc/';
+  $w = 10;
+
+  $libraries['yamaps.full'] = array(
+    'title' => 'Yandex maps. Edit mode.',
+    'version' => '2.x',
+    'js' => array(
+      'http://api-maps.yandex.ru/2.0/?load=package.full&lang=ru-RU&wizard=Drupal_yamaps_' . $language->language =>
+        array('type' => 'external', 'scope' => 'footer', 'weight' => $w++),
+      $path . 'yamaps.init.js' => array('scope' => 'footer', 'weight' => $w++),
+      $path . 'yamaps.layouts.js' => array('scope' => 'footer', 'weight' => $w++),
+      $path . 'yamaps.placemark.js' => array('scope' => 'footer', 'weight' => $w++),
+      $path . 'yamaps.line.js' => array('scope' => 'footer', 'weight' => $w++),
+      $path . 'yamaps.polygon.js' => array('scope' => 'footer', 'weight' => $w++),
+      $path . 'yamaps.map.js' => array('scope' => 'footer', 'weight' => $w++),
+      $path . 'yamaps.run.js' => array('scope' => 'footer', 'weight' => $w++),
+    ),
+    'css' => array(
+      $path . 'yamaps.css' => array(),
+    ),
+  );
+
+  return $libraries;
+}
