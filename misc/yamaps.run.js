@@ -18,11 +18,11 @@
         var map = new $.yaMaps.YamapsMap(mapId, options);
         if (options.controls) {
           map.enableControls();
-          map.enableTools();
         }
         if (options.traffic) {
           map.enableTraffic();
         }
+        map.enableTools();
       }
     }
 

@@ -3,7 +3,7 @@
     $.extend({
       yaMaps: {
         maps: {},
-        _mapTools: ['default'],
+        _mapTools: [],
         _init: [],
         _layouts: {},
         addMapTools: function(button) {
