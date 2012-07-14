@@ -1,4 +1,5 @@
-yamaps
+Яндекс.Карты
 ======
 
-Yandex.Maps drupal 7 module
+Модуль для Drupal 7.
+Предоставляет поле Яндекс.Карта, используется Field API

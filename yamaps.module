@@ -8,7 +8,7 @@ function yamaps_field_info() {
     'field_yamaps' => array(
       'label' => t('Yandex map'),
       'default_widget' => 'yamaps_field',
-      'default_formatter' => 'field_yamaps_formatter',
+      'default_formatter' => 'field_yamaps_formatter_dynamic',
     ),
   );
 }
@@ -58,7 +58,7 @@ function yamaps_field_process($element, $form_state, $complete_form) {
   drupal_add_library('yamaps', 'yamaps.full');
 
   $element['map'] = array(
-    '#markup' => '<div id="'.$id.'" style="width:100%;height:450px"></div>'
+    '#markup' => '<div id="'.$id.'" style="width:100%;height:400px"></div>'
   );
   $element['coords'] = array(
     '#type' => 'hidden',
@@ -92,7 +92,11 @@ function yamaps_field_process($element, $form_state, $complete_form) {
     '#attributes' => array('class' => array('field-yamaps-polygons')),
   );
 
-  $element['#description'] = l('http://api.yandex.ru/maps/tools/getlonglat/', 'http://api.yandex.ru/maps/tools/getlonglat/');
+  $element['#description'] = '<div class="yamaps-terms">' . l(
+    t('Terms of service «API Yandex.Maps»'),
+    'http://legal.yandex.ru/maps_api/',
+    array('attributes' => array('target' => '_blank'))
+  ) . '</div>';
 
   return $element;
 }
