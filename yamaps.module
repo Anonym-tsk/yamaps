@@ -1,8 +1,19 @@
 <?php
 
+/**
+ * @file
+ * Yandex.Maps module main file.
+ */
+
+/**
+ * Includes.
+ */
 module_load_include('inc', 'yamaps', 'inc/yamaps.formatter');
 module_load_include('inc', 'yamaps', 'inc/yamaps.widget');
 
+/**
+ * Implements hook_field_info().
+ */
 function yamaps_field_info() {
   return array(
     'field_yamaps' => array(
@@ -13,10 +24,16 @@ function yamaps_field_info() {
   );
 }
 
+/**
+ * Implements hook_field_is_empty().
+ */
 function yamaps_field_is_empty($item, $field) {
   return empty($item['coords']);
 }
 
+/**
+ * Implements hook_element_info().
+ */
 function yamaps_element_info() {
   $elements = array();
   $elements['yamaps_field'] =  array(
@@ -27,6 +44,10 @@ function yamaps_element_info() {
   return $elements;
 }
 
+/**
+ * Process field for edit form.
+ * @see yamaps_element_info()
+ */
 function yamaps_field_process($element, $form_state, $complete_form) {
   $coords = isset($element['#value']['coords']) ? $element['#value']['coords'] : NULL;
   $coordsArray = drupal_json_decode($coords);
@@ -38,7 +59,7 @@ function yamaps_field_process($element, $form_state, $complete_form) {
   $polygons = isset($element['#value']['polygons']) ? $element['#value']['polygons'] : NULL;
   $polygonsArray = drupal_json_decode($polygons);
 
-  $id = 'ymap-'.$element['#delta'].'-edit';
+  $id = 'ymap-' . $element['#delta'] . '-edit';
   $map = array(
     'init' => array(
       'center' => $coordsArray['center'],
@@ -58,7 +79,7 @@ function yamaps_field_process($element, $form_state, $complete_form) {
   drupal_add_library('yamaps', 'yamaps.full');
 
   $element['map'] = array(
-    '#markup' => '<div id="'.$id.'" style="width:100%;height:400px"></div>'
+    '#markup' => '<div id="' . $id . '" style="width:100%;height:400px"></div>'
   );
   $element['coords'] = array(
     '#type' => 'hidden',
@@ -101,6 +122,9 @@ function yamaps_field_process($element, $form_state, $complete_form) {
   return $element;
 }
 
+/**
+ * Implements hook_library().
+ */
 function yamaps_library() {
   global $language;
   $path = drupal_get_path('module', 'yamaps') . '/misc/';

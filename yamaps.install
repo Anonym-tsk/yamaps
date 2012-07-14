@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * @file
+ * Install, update, and uninstall functions for the Call Me module.
+ */
+
+/**
+ * Implements hook_field_schema().
+ */
 function yamaps_field_schema($field) {
   return array(
     'columns' => array(

@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * @file
+ * Yandex.Maps field widget.
+ */
+
+/**
+ * Implements hook_field_widget_info().
+ */
 function yamaps_field_widget_info() {
   return array(
     'yamaps_field' => array(
@@ -9,6 +17,9 @@ function yamaps_field_widget_info() {
   );
 }
 
+/**
+ * Implements hook_field_widget_form().
+ */
 function yamaps_field_widget_form(&$form, &$form_state, $field, $instance, $langcode, $items, $delta, $element) {
   $element += array(
     '#type' => $instance['widget']['type'],

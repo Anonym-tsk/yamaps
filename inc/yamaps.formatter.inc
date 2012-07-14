@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * @file
+ * Yandex.Maps field formatter.
+ */
+
+/**
+ * Implements hook_field_formatter_info().
+ */
 function yamaps_field_formatter_info() {
   return array(
     'field_yamaps_formatter_dynamic' => array(
@@ -24,6 +32,9 @@ function yamaps_field_formatter_info() {
   );
 }
 
+/**
+ * Implements hook_field_formatter_settings_form().
+ */
 function yamaps_field_formatter_settings_form($field, $instance, $view_mode, $form, &$form_state) {
   $display = $instance['display'][$view_mode];
   $settings = $display['settings'];
@@ -85,6 +96,9 @@ function yamaps_field_formatter_settings_form($field, $instance, $view_mode, $fo
   return $element;
 }
 
+/**
+ * Implements hook_field_formatter_settings_summary().
+ */
 function yamaps_field_formatter_settings_summary($field, $instance, $view_mode) {
   $display = $instance['display'][$view_mode];
   $settings = $display['settings'];
@@ -105,6 +119,9 @@ function yamaps_field_formatter_settings_summary($field, $instance, $view_mode) 
   return implode('<br />', $summary);
 }
 
+/**
+ * Implements hook_field_formatter_view().
+ */
 function yamaps_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
   $element = array();
   $settings = $display['settings'];
@@ -113,7 +130,7 @@ function yamaps_field_formatter_view($entity_type, $entity, $field, $instance, $
     case 'field_yamaps_formatter_dynamic':
       $maps = array();
       foreach ($items as $delta => $item) {
-        $id = 'ymap-'.$delta;
+        $id = 'ymap-' . $delta;
         $coords = drupal_json_decode($item['coords']);
         $maps[$id] = array(
           'init' => array(
@@ -134,7 +151,7 @@ function yamaps_field_formatter_view($entity_type, $entity, $field, $instance, $
           '#tag' => 'div',
           '#attributes' => array(
             'id' => $id,
-            'style' => 'width:'.$settings['width'].'px;height:'.$settings['height'].'px'
+            'style' => 'width:' . $settings['width'] . 'px;height:' . $settings['height'] . 'px'
           ),
           '#value' => ''
         );
@@ -146,22 +163,22 @@ function yamaps_field_formatter_view($entity_type, $entity, $field, $instance, $
       break;
     case 'field_yamaps_formatter_static':
       foreach ($items as $delta => $item) {
-        $id = 'ymap-'.$delta;
+        $id = 'ymap-' . $delta;
         $coords = drupal_json_decode($item['coords']);
         $params = array();
         $url = 'http://static-maps.yandex.ru/1.x/';
-        $params['ll'] = end($coords['center']).','.reset($coords['center']);
+        $params['ll'] = end($coords['center']) . ',' . reset($coords['center']);
         $params['z'] = $coords['zoom'];
-        $params['size'] = $settings['width'].','.$settings['height'];
+        $params['size'] = $settings['width'] . ',' . $settings['height'];
 
-        $mapTypes = array(
+        $map_types = array(
           'yandex#map' => 'map',
           'yandex#satellite' => 'sat',
           'yandex#hybrid' => 'sat,skl',
           'yandex#publicMap' => 'pmap',
           'yandex#publicMapHybrid' => 'sat,pskl',
         );
-        $params['l'] = $mapTypes[$item['type'] ? $item['type'] : 'yandex#map'];
+        $params['l'] = $map_types[$item['type'] ? $item['type'] : 'yandex#map'];
         if ($settings['traffic']) {
           $params['l'] .= ',trf';
         }
@@ -197,7 +214,7 @@ function yamaps_field_formatter_view($entity_type, $entity, $field, $instance, $
 
         $pt = array();
         foreach (drupal_json_decode($item['placemarks']) as $placemark) {
-          $pm = end($placemark['coords']).','.reset($placemark['coords']).',';
+          $pm = end($placemark['coords']) . ',' . reset($placemark['coords']) . ',';
           $pm .= 'pm2';
           $pm .= $colors21[$placemark['params']['color']];
           $pm .= 'm';
@@ -208,8 +225,8 @@ function yamaps_field_formatter_view($entity_type, $entity, $field, $instance, $
         $pl = array();
         foreach (drupal_json_decode($item['lines']) as $line) {
           $opts = $line['params'];
-          $pm = 'c:'.$colors[$opts['strokeColor']]. dechex(255 * $opts['opacity']) . ',';
-          $pm .= 'w:'.$opts['strokeWidth'].',';
+          $pm = 'c:' . $colors[$opts['strokeColor']] . dechex(255 * $opts['opacity']) . ',';
+          $pm .= 'w:' . $opts['strokeWidth'] . ',';
           $c = array();
           foreach ($line['coords'] as $coords) {
             $c[] = end($coords);
@@ -222,12 +239,12 @@ function yamaps_field_formatter_view($entity_type, $entity, $field, $instance, $
         foreach (drupal_json_decode($item['polygons']) as $polygon) {
           $opts = $polygon['params'];
           $opa = dechex(255 * $opts['opacity']);
-          $pm = 'c:'.$colors[$opts['strokeColor']]. $opa . ',';
-          $pm .= 'f:'.$colors[$opts['fillColor']]. $opa . ',';
-          $pm .= 'w:'.$opts['strokeWidth'].',';
+          $pm = 'c:' . $colors[$opts['strokeColor']] . $opa . ',';
+          $pm .= 'f:' . $colors[$opts['fillColor']] . $opa . ',';
+          $pm .= 'w:' . $opts['strokeWidth'] . ',';
           $c = array();
-          foreach ($polygon['coords'] as $coordsA) {
-            foreach ($coordsA as $coords) {
+          foreach ($polygon['coords'] as $coords_array) {
+            foreach ($coords_array as $coords) {
               $c[] = end($coords);
               $c[] = reset($coords);
             }
@@ -242,7 +259,7 @@ function yamaps_field_formatter_view($entity_type, $entity, $field, $instance, $
           '#tag' => 'div',
           '#attributes' => array(
             'id' => $id,
-            'style' => 'width:'.$settings['width'].'px;height:'.$settings['height'].'px'
+            'style' => 'width:' . $settings['width'] . 'px;height:' . $settings['height'] . 'px'
           ),
           '#value' => theme('image', array(
             'path' => url($url, array('query' => $params, 'external' => TRUE)),
