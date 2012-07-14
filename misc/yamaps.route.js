@@ -3,6 +3,15 @@
     $.yaMaps.addMapTools(function(Map) {
       var firstPoint = null;
       var secondPoint = null;
+      var exportRoute = function(start, end) {
+        var $storage = $('.field-yamaps-routes');
+        if (!start || !end) {
+          $storage.val('');
+        }
+        else {
+          $storage.val(JSON.stringify([start, end]));
+        }
+      };
       var writeRoute = function(start, end, route) {
         ymaps.route([start, end], {mapStateAutoApply: false}).then(
           function (newRoute) {
@@ -18,16 +27,24 @@
             pointEnd.options.set('preset', 'twirl#houseIcon');
 
             if (Map.options.edit) {
-              var $storage = $('.field-yamaps-routes');
-              $storage.val(JSON.stringify([start, end]));
+              exportRoute(start, end);
 
               points.options.set('draggable', true);
               points.events.add('dragend', function() {
                 writeRoute(this.start.geometry.getCoordinates(), this.end.geometry.getCoordinates(), newRoute);
               }, {start: pointStart, end: pointEnd});
+
+              points.events.add('click', function() {
+                Map.map.geoObjects.remove(this);
+                firstPoint = secondPoint = null;
+                exportRoute(null, null);
+              }, newRoute);
             }
           },
           function (error) {
+            if (!route) {
+              firstPoint = secondPoint = null;
+            }
             alert("Возникла ошибка: " + error.message);
           }
         );
