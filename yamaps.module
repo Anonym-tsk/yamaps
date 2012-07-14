@@ -117,7 +117,7 @@ function yamaps_field_process($element, $form_state, $complete_form) {
     '#attributes' => array('class' => array('field-yamaps-polygons')),
   );
   $element['routes'] = array(
-    '#type' => 'textarea',
+    '#type' => 'hidden',
     '#title' => t('Routes'),
     '#default_value' => $routes,
     '#attributes' => array('class' => array('field-yamaps-routes')),
