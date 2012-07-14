@@ -5,6 +5,10 @@
  * Yandex.Maps block.
  */
 
+
+/**
+ * Implements hook_block_info().
+ */
 function yamaps_block_info() {
   $blocks['yamaps'] = array(
     'info' => t('Yandex.Map'),
@@ -13,6 +17,9 @@ function yamaps_block_info() {
   return $blocks;
 }
 
+/**
+ * Implements hook_block_configure().
+ */
 function yamaps_block_configure($delta = '') {
   $form = array();
   if ($delta == 'yamaps') {
@@ -58,6 +65,9 @@ function yamaps_block_configure($delta = '') {
   return $form;
 }
 
+/**
+ * Implements hook_block_save().
+ */
 function yamaps_block_save($delta = '', $edit = array()) {
   if ($delta == 'yamaps') {
     variable_set('yamaps_block_controls', $edit['yamaps_block_controls']);
@@ -72,6 +82,9 @@ function yamaps_block_save($delta = '', $edit = array()) {
   }
 }
 
+/**
+ * Implements hook_block_view().
+ */
 function yamaps_block_view($delta = '') {
   $block = array();
   if ($delta == 'yamaps') {
@@ -81,6 +94,10 @@ function yamaps_block_view($delta = '') {
   return $block;
 }
 
+/**
+ * Returns block content.
+ * @see yamaps_block_view()
+ */
 function yamaps_block_content($delta) {
   $id = 'ymap-block-' . $delta;
   $coords = drupal_json_decode(variable_get('yamaps_block_coords', NULL));
