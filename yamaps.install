@@ -35,6 +35,10 @@ function yamaps_field_schema($field) {
         'type' => 'text',
         'not null' => TRUE,
       ),
+      'routes' => array(
+        'type' => 'text',
+        'not null' => TRUE,
+      ),
     ),
     'indexes' => array(),
   );
@@ -53,4 +57,5 @@ function yamaps_uninstall() {
   variable_del('yamaps_block_placemarks');
   variable_del('yamaps_block_lines');
   variable_del('yamaps_block_polygons');
+  variable_del('yamaps_block_routes');
 }

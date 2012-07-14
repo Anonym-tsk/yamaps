@@ -59,6 +59,8 @@ function yamaps_field_process($element, $form_state, $complete_form) {
   $linesArray = drupal_json_decode($lines);
   $polygons = isset($element['#value']['polygons']) ? $element['#value']['polygons'] : NULL;
   $polygonsArray = drupal_json_decode($polygons);
+  $routes = isset($element['#value']['routes']) ? $element['#value']['routes'] : NULL;
+  $routesArray = drupal_json_decode($routes);
 
   $id = 'ymap-' . $element['#delta'] . '-edit';
   $map = array(
@@ -73,6 +75,7 @@ function yamaps_field_process($element, $form_state, $complete_form) {
     'placemarks' => $placemarksArray,
     'lines' => $linesArray,
     'polygons' => $polygonsArray,
+    'routes' => $routesArray,
     'edit' => TRUE,
   );
 
@@ -113,6 +116,12 @@ function yamaps_field_process($element, $form_state, $complete_form) {
     '#default_value' => $polygons,
     '#attributes' => array('class' => array('field-yamaps-polygons')),
   );
+  $element['routes'] = array(
+    '#type' => 'hidden',
+    '#title' => t('Routes'),
+    '#default_value' => $routes,
+    '#attributes' => array('class' => array('field-yamaps-routes')),
+  );
 
   $element['#description'] = '<div class="yamaps-terms">' . l(
     t('Terms of service «API Yandex.Maps»'),
@@ -142,6 +151,7 @@ function yamaps_library() {
       $path . 'yamaps.placemark.js' => array('scope' => 'footer', 'weight' => $w++),
       $path . 'yamaps.line.js' => array('scope' => 'footer', 'weight' => $w++),
       $path . 'yamaps.polygon.js' => array('scope' => 'footer', 'weight' => $w++),
+      $path . 'yamaps.route.js' => array('scope' => 'footer', 'weight' => $w++),
       $path . 'yamaps.map.js' => array('scope' => 'footer', 'weight' => $w++),
       $path . 'yamaps.run.js' => array('scope' => 'footer', 'weight' => $w++),
     ),

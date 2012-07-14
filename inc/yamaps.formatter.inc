@@ -144,6 +144,7 @@ function yamaps_field_formatter_view($entity_type, $entity, $field, $instance, $
           'placemarks' => drupal_json_decode($item['placemarks']),
           'lines' => drupal_json_decode($item['lines']),
           'polygons' => drupal_json_decode($item['polygons']),
+          'routes' => drupal_json_decode($item['routes']),
           'edit' => FALSE,
         );
         $element[$delta] = array(

@@ -58,6 +58,7 @@ function yamaps_block_configure($delta = '') {
         'placemarks' => variable_get('yamaps_block_placemarks', NULL),
         'lines' => variable_get('yamaps_block_lines', NULL),
         'polygons' => variable_get('yamaps_block_polygons', NULL),
+        'routes' => variable_get('yamaps_block_routes', NULL),
       ),
     );
     $form += yamaps_field_process($element, NULL, NULL);
@@ -79,6 +80,7 @@ function yamaps_block_save($delta = '', $edit = array()) {
     variable_set('yamaps_block_placemarks', $edit['placemarks']);
     variable_set('yamaps_block_lines', $edit['lines']);
     variable_set('yamaps_block_polygons', $edit['polygons']);
+    variable_set('yamaps_block_routes', $edit['routes']);
   }
 }
 
@@ -115,6 +117,7 @@ function yamaps_block_content($delta) {
     'placemarks' => drupal_json_decode(variable_get('yamaps_block_placemarks', NULL)),
     'lines' => drupal_json_decode(variable_get('yamaps_block_lines', NULL)),
     'polygons' => drupal_json_decode(variable_get('yamaps_block_polygons', NULL)),
+    'routes' => drupal_json_decode(variable_get('yamaps_block_routes', NULL)),
     'edit' => FALSE,
   );
   drupal_add_js(array('yamaps' => array($id => $map)), 'setting');
