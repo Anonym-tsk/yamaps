@@ -3,3 +3,4 @@ description = Provide Yandex map field for display map on your pages
 core = 7.x
 package = Yandex
 dependencies[] = field
+dependencies[] = block
