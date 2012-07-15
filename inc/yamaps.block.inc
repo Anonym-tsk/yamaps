@@ -12,7 +12,7 @@
 function yamaps_block_info() {
   $blocks['yamaps'] = array(
     'info' => t('Yandex.Map'),
-    'cache' => DRUPAL_CACHE_GLOBAL,
+    'cache' => DRUPAL_NO_CACHE,
   );
   return $blocks;
 }
