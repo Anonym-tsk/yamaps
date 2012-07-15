@@ -13,13 +13,13 @@
             center: event.get('newCenter'),
             zoom: event.get('newZoom')
           };
-          var $storage = $('.field-yamaps-coords');
+          var $storage = $('.field-yamaps-coords-' + mapId);
           $storage.val(JSON.stringify(coords));
         };
 
         this.exportType = function(event) {
           var type = event.get('newType');
-          var $storage = $('.field-yamaps-type');
+          var $storage = $('.field-yamaps-type-' + mapId);
           $storage.val(type);
         };
 

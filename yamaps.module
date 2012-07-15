@@ -50,6 +50,7 @@ function yamaps_element_info() {
  * @see yamaps_element_info()
  */
 function yamaps_field_process($element, $form_state, $complete_form) {
+  // Map information
   $coords = isset($element['#value']['coords']) ? $element['#value']['coords'] : NULL;
   $coordsArray = drupal_json_decode($coords);
   $type = isset($element['#value']['type']) ? $element['#value']['type'] : 'yandex#map';
@@ -62,6 +63,7 @@ function yamaps_field_process($element, $form_state, $complete_form) {
   $routes = isset($element['#value']['routes']) ? $element['#value']['routes'] : NULL;
   $routesArray = drupal_json_decode($routes);
 
+  // Unique map id
   $id = 'ymap-' . $element['#delta'] . '-edit';
   $map = array(
     'init' => array(
@@ -90,37 +92,37 @@ function yamaps_field_process($element, $form_state, $complete_form) {
     '#title' => t('Coordinates'),
     '#default_value' => $coords,
     '#required' => $element['#required'],
-    '#attributes' => array('class' => array('field-yamaps-coords')),
+    '#attributes' => array('class' => array('field-yamaps-coords-' . $id)),
   );
   $element['type'] = array(
     '#type' => 'hidden',
     '#title' => t('Type'),
     '#default_value' => $type,
-    '#attributes' => array('class' => array('field-yamaps-type')),
+    '#attributes' => array('class' => array('field-yamaps-type-' . $id)),
   );
   $element['placemarks'] = array(
     '#type' => 'hidden',
     '#title' => t('Placemarks'),
     '#default_value' => $placemarks,
-    '#attributes' => array('class' => array('field-yamaps-placemarks')),
+    '#attributes' => array('class' => array('field-yamaps-placemarks-' . $id)),
   );
   $element['lines'] = array(
     '#type' => 'hidden',
     '#title' => t('Lines'),
     '#default_value' => $lines,
-    '#attributes' => array('class' => array('field-yamaps-lines')),
+    '#attributes' => array('class' => array('field-yamaps-lines-' . $id)),
   );
   $element['polygons'] = array(
     '#type' => 'hidden',
     '#title' => t('Polygons'),
     '#default_value' => $polygons,
-    '#attributes' => array('class' => array('field-yamaps-polygons')),
+    '#attributes' => array('class' => array('field-yamaps-polygons-' . $id)),
   );
   $element['routes'] = array(
     '#type' => 'hidden',
     '#title' => t('Routes'),
     '#default_value' => $routes,
-    '#attributes' => array('class' => array('field-yamaps-routes')),
+    '#attributes' => array('class' => array('field-yamaps-routes-' . $id)),
   );
 
   $element['#description'] = '<div class="yamaps-terms">' . l(
