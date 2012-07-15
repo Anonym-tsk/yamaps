@@ -135,3 +135,6 @@ msgstr "Размер карты: @width x @height"
 
 msgid "Error found"
 msgstr "Возникла ошибка"
+
+msgid "The route is already on this map"
+msgstr "На этой карте уже построен маршрут"

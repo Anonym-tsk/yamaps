@@ -1,5 +1,11 @@
+/**
+ * @file
+ * Base layouts
+ */
+
 (function($) {
   ymaps.ready(function() {
+    // Available colors
     $.yaMaps.colors = {
       blue: '#006cff',
       lightblue: '#66c7ff',
@@ -14,11 +20,13 @@
       violet: '#b832fd',
       pink: '#fd32fb'
     };
+    // HTML for colorpicker
     $.yaMaps.colorsHTML = '';
     for (var i in $.yaMaps.colors) {
       $.yaMaps.colorsHTML += '<div class="yamaps-color"><div data-content="' + i + '">' + $.yaMaps.colors[i] + '</div></div>';
     }
 
+    // Opacity select layout
     $.yaMaps.addLayout('yamaps#OpacityLayout', ymaps.templateLayoutFactory.createClass([
       '<label for="opacity">' + Drupal.t('Opacity') + '</label>',
       '<select id="opacity">',
@@ -35,6 +43,7 @@
       '</select>'
     ].join('')));
 
+    // Stroke width layout
     $.yaMaps.addLayout('yamaps#StrokeWidthLayout', ymaps.templateLayoutFactory.createClass([
       '<label for="strokeWidth">' + Drupal.t('Stroke width') + '</label>',
       '<select id="strokeWidth">',
@@ -46,6 +55,7 @@
       '</select>'
     ].join('')));
 
+    // ColorPicker layout
     $.yaMaps.addLayout('yamaps#ColorPicker', ymaps.templateLayoutFactory.createClass(
       '<div class="yamaps-colors">' + $.yaMaps.colorsHTML + '</div>',
       {
@@ -69,12 +79,12 @@
       }
     ));
 
+    // Ballon actions layout
     $.yaMaps.addLayout('yamaps#ActionsButtons', ymaps.templateLayoutFactory.createClass(
       '<div class="actions">' +
       '<a id="deleteButton" href="#">' + Drupal.t('Delete') + '</a>' +
       '<input id="saveButton" type="button" value="' + Drupal.t('Save') + '"/>' +
       '</div>'
     ));
-
   });
 })(jQuery);

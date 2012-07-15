@@ -65,6 +65,7 @@ function yamaps_field_process($element, $form_state, $complete_form) {
 
   // Unique map id
   $id = 'ymap-' . $element['#delta'] . '-edit';
+  // Map initialization parameters
   $map = array(
     'init' => array(
       'center' => $coordsArray['center'],
@@ -81,12 +82,16 @@ function yamaps_field_process($element, $form_state, $complete_form) {
     'edit' => TRUE,
   );
 
+  // Add information about this map to js
   drupal_add_js(array('yamaps' => array($id => $map)), 'setting');
+  // Load library
   drupal_add_library('yamaps', 'yamaps.full');
 
+  // Map container
   $element['map'] = array(
     '#markup' => '<div id="' . $id . '" style="width:100%;height:400px"></div>'
   );
+  // Hidden elements to saving map information
   $element['coords'] = array(
     '#type' => 'hidden',
     '#title' => t('Coordinates'),
@@ -125,6 +130,7 @@ function yamaps_field_process($element, $form_state, $complete_form) {
     '#attributes' => array('class' => array('field-yamaps-routes-' . $id)),
   );
 
+  // Map description
   $element['#description'] = '<div class="yamaps-terms">' . l(
     t('Terms of service «API Yandex.Maps»'),
     'http://legal.yandex.ru/maps_api/',
@@ -138,8 +144,11 @@ function yamaps_field_process($element, $form_state, $complete_form) {
  * Implements hook_library().
  */
 function yamaps_library() {
+  // Users language
   global $language;
+  // Module path
   $path = drupal_get_path('module', 'yamaps') . '/misc/';
+  // Weight counter
   $w = 10;
 
   $libraries['yamaps.full'] = array(
