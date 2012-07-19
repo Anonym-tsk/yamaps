@@ -92,6 +92,19 @@
       // Export line or polygon
       export: function() {
         var coords = this.element.geometry.getCoordinates();
+        if (typeof coords[0] != 'object' || coords.length < 1) {
+          return;
+        }
+        else {
+          if (typeof coords[0][0] == 'object') {
+            if (coords[0].length < 3) {
+              return;
+            }
+          }
+          else if (coords.length < 2) {
+            return;
+          }
+        }
         var props = this.element.properties.getAll();
         var data = {
           coords: coords,
@@ -136,7 +149,10 @@
       export: function() {
         var data = [];
         this.elements.each(function(element) {
-          data.push(element.properties.get('element').export());
+          var content = element.properties.get('element').export();
+          if (content) {
+            data.push(content);
+          }
         });
         return data;
       },
