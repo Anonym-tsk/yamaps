@@ -7,24 +7,13 @@
   ymaps.ready(function() {
     // Class for one polygon
     $.yaMaps.YamapsPolygon = function(geometry, properties, options) {
-      this.element = new ymaps.Polygon(geometry, properties, options);
-      this.parent = null;
-
-      // Actions for export polygons
-      this.element.events.add(['geometrychange', 'propertieschange'], this.exportParent, this);
-
-      // Polygon initialization parameters
-      this.element.properties.set('element', this);
-      this.setColor(properties.strokeColor, properties.fillColor);
-      this.setOpacity(properties.opacity);
-      this.setWidth(properties.strokeWidth);
+      this._init(new ymaps.Polygon(geometry, properties, options));
     };
     $.yaMaps.YamapsPolygon.prototype = $.yaMaps.BaseYamapsObject;
 
     // Class for polygons collection
     $.yaMaps.YamapsPolygonCollection = function(options) {
-      this.elements = new ymaps.GeoObjectCollection();
-      this.elements.options.set(options);
+      this._init(options);
       // Selector "storagePrefix + MAP_ID" will be used for export collection data
       this.storagePrefix = '.field-yamaps-polygons-';
 
@@ -81,7 +70,7 @@
             this.$polyColors.bind('click', this, this.fillColorClick);
 
             // Polygon line colorpicker
-            this.$lineColors = $(this.getParentElement()).find('.line-colors .yamaps-color');
+            this.$lineColors = $element.find('.line-colors .yamaps-color');
             this.$lineColors.each(function() {
               var $this = $(this);
               var $div = $this.children('div');
@@ -168,7 +157,7 @@
 
       // Add already created polygons to map
       for (var i in Map.options.polygons) {
-        var Polygon = polygonsCollection.add(new $.yaMaps.YamapsPolygon(Map.options.polygons[i].coords, Map.options.polygons[i].params));
+        var Polygon = polygonsCollection.createPolygon(Map.options.polygons[i].coords, Map.options.polygons[i].params);
         if (Map.options.edit) {
           Polygon.startEditing();
         }
@@ -181,8 +170,7 @@
 
       // If map in edit mode set map click listener to adding new polygon
       var mapClick = function(event) {
-        var Polygon = new $.yaMaps.YamapsPolygon([[event.get('coordPosition')]], {balloonContent: '', fillColor: 'lightblue', strokeColor: 'blue', opacity: 0.6, strokeWidth: 3});
-        polygonsCollection.add(Polygon);
+        var Polygon = polygonsCollection.createPolygon([[event.get('coordPosition')]], {balloonContent: '', fillColor: 'lightblue', strokeColor: 'blue', opacity: 0.6, strokeWidth: 3});
         Polygon.startEditing(true);
       };
 

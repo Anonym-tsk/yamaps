@@ -7,24 +7,13 @@
   ymaps.ready(function() {
     // Class for one line
     $.yaMaps.YamapsLine = function(geometry, properties, options) {
-      this.element = new ymaps.Polyline(geometry, properties, options);
-      this.parent = null;
-
-      // Actions for export lines
-      this.element.events.add(['geometrychange', 'propertieschange'], this.exportParent, this);
-
-      // Line initialization parameters
-      this.element.properties.set('element', this);
-      this.setColor(properties.strokeColor);
-      this.setOpacity(properties.opacity);
-      this.setWidth(properties.strokeWidth);
+      this._init(new ymaps.Polyline(geometry, properties, options));
     };
     $.yaMaps.YamapsLine.prototype = $.yaMaps.BaseYamapsObject;
 
     // Class for lines collection
     $.yaMaps.YamapsLineCollection = function(options) {
-      this.elements = new ymaps.GeoObjectCollection();
-      this.elements.options.set(options);
+      this._init(options);
       // Selector "storagePrefix + MAP_ID" will be used for export collection data
       this.storagePrefix = '.field-yamaps-lines-';
 
@@ -151,11 +140,9 @@
 
       // Add already created lines to map
       for (var i in Map.options.lines) {
-        var Line = linesCollection.add(new $.yaMaps.YamapsLine(Map.options.lines[i].coords, Map.options.lines[i].params));
+        var Line = linesCollection.createLine(Map.options.lines[i].coords, Map.options.lines[i].params);
         if (Map.options.edit) {
-          if (Map.options.edit) {
-            Line.startEditing();
-          }
+          Line.startEditing();
         }
       }
 
@@ -166,8 +153,7 @@
 
       // If map in edit mode set map click listener to adding new line
       var mapClick = function(event) {
-        var Line = new $.yaMaps.YamapsLine([event.get('coordPosition')], {balloonContent: '', strokeColor: 'blue', opacity: 0.8, strokeWidth: 3});
-        linesCollection.add(Line);
+        var Line = linesCollection.createLine([event.get('coordPosition')], {balloonContent: '', strokeColor: 'blue', opacity: 0.8, strokeWidth: 3});
         Line.startEditing(true);
       };
 

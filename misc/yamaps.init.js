@@ -113,6 +113,21 @@
         if (collection) {
           collection.exportToHTML();
         }
+      },
+      // Init object
+      _init: function(element) {
+        this.element = element;
+        this.parent = null;
+
+        // Actions for export lines or polygons
+        this.element.events.add(['geometrychange', 'propertieschange'], this.exportParent, this);
+
+        // Line or polygon initialization parameters
+        this.element.properties.set('element', this);
+        var properties = this.element.properties.getAll();
+        this.setColor(properties.strokeColor, properties.fillColor);
+        this.setOpacity(properties.opacity);
+        this.setWidth(properties.strokeWidth);
       }
     };
 
@@ -141,6 +156,11 @@
       // Remove polygon or line from map
       remove: function(Element) {
         this.elements.remove(Element.element);
+      },
+      // Init object
+      _init: function(options) {
+        this.elements = new ymaps.GeoObjectCollection();
+        this.elements.options.set(options);
       }
     };
   });
