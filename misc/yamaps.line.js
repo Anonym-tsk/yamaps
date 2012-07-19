@@ -7,72 +7,13 @@
   ymaps.ready(function() {
     // Class for one line
     $.yaMaps.YamapsLine = function(geometry, properties, options) {
-      this.line = new ymaps.Polyline(geometry, properties, options);
+      this.element = new ymaps.Polyline(geometry, properties, options);
       this.parent = null;
-
-      // Edit line mode
-      this.startEditing = function(active) {
-        this.line.editor.startEditing();
-        if (active) {
-          this.line.editor.state.set('drawing', true);
-        }
-        this.line.editor.events.add('statechange', function(e) {
-          if (this.line.editor.state.get('editing') && !this.line.editor.state.get('drawing')) {
-            this.openBalloon();
-          }
-        }, this);
-      };
-
-      // Set balloon content
-      this.setContent = function(balloonContent) {
-        this.line.properties.set('balloonContent', balloonContent);
-      };
-
-      // Set line color
-      this.setColor = function(strokeColor) {
-        this.line.options.set('strokeColor', $.yaMaps.colors[strokeColor]);
-      };
-
-      // Set line opacity
-      this.setOpacity = function(opacity) {
-        this.line.options.set('opacity', opacity);
-      };
-
-      // Set line width
-      this.setWidth = function(width) {
-        this.line.options.set('strokeWidth', width);
-      };
-
-      // Close balloon
-      this.closeBalloon = function() {
-        this.line.balloon.close();
-      };
-
-      // Open balloon
-      this.openBalloon = function() {
-        this.line.balloon.open();
-      };
-
-      // Remove line
-      this.remove = function() {
-        this.getParent().remove(this);
-        this.exportParent();
-      };
-
-      // Set line parent object
-      this.setParent = function(Parent) {
-        this.parent = Parent;
-      };
-
-      // Get line parent
-      this.getParent = function() {
-        return this.parent;
-      };
 
       // Export lines information
       this.export = function() {
-        var coords = this.line.geometry.getCoordinates();
-        var props = this.line.properties.getAll();
+        var coords = this.element.geometry.getCoordinates();
+        var props = this.element.properties.getAll();
         return {
           coords: coords,
           params: {
@@ -90,23 +31,23 @@
         if (collection) {
           var mapId = collection.elements.getMap().container.getElement().parentElement.id;
           var lines = collection.export();
-          // Hardcoded html class
           var $storage = $('.field-yamaps-lines-' + mapId);
           $storage.val(JSON.stringify(lines));
         }
       };
 
       // Actions for export lines
-      this.line.events
+      this.element.events
         .add('geometrychange', this.exportParent, this)
         .add('propertieschange', this.exportParent, this);
 
       // Line initialization parameters
-      this.line.properties.set('Line', this);
+      this.element.properties.set('element', this);
       this.setColor(properties.strokeColor);
       this.setOpacity(properties.opacity);
       this.setWidth(properties.strokeWidth);
     };
+    $.yaMaps.YamapsLine.prototype = $.yaMaps.BasePlugin;
 
     // Class for lines collection
     $.yaMaps.YamapsLineCollection = function(options) {
@@ -118,7 +59,7 @@
       this.add = function(Line) {
         Line.setParent(this);
         this.lines.push(Line);
-        this.elements.add(Line.line);
+        this.elements.add(Line.element);
         return Line;
       };
 
@@ -129,7 +70,7 @@
 
       // Remove line from map
       this.remove = function(Line) {
-        this.elements.remove(Line.line);
+        this.elements.remove(Line.element);
         for (var i in this.lines) {
           if (this.lines[i] === Line) {
             this.lines.splice(i, 1);
@@ -225,12 +166,12 @@
           },
           onDeleteClick: function (e) {
             // Delete link click
-            e.data.properties.Line.remove();
+            e.data.properties.element.remove();
             e.preventDefault();
           },
           onSaveClick: function(e) {
             // Save button click
-            var line = e.data.properties.Line;
+            var line = e.data.properties.element;
             // Set opacity
             e.data.properties.opacity = e.data.$opacity.val();
             line.setOpacity(e.data.properties.opacity);

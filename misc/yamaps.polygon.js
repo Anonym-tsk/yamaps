@@ -7,73 +7,13 @@
   ymaps.ready(function() {
     // Class for one polygon
     $.yaMaps.YamapsPolygon = function(geometry, properties, options) {
-      this.polygon = new ymaps.Polygon(geometry, properties, options);
+      this.element = new ymaps.Polygon(geometry, properties, options);
       this.parent = null;
-
-      // Edit polygon mode
-      this.startEditing = function(active) {
-        this.polygon.editor.startEditing();
-        if (active) {
-          this.polygon.editor.state.set('drawing', true);
-        }
-        this.polygon.editor.events.add('statechange', function(e) {
-          if (this.polygon.editor.state.get('editing') && !this.polygon.editor.state.get('drawing')) {
-            this.openBalloon();
-          }
-        }, this);
-      };
-
-      // Set balloon content
-      this.setContent = function(balloonContent) {
-        this.polygon.properties.set('balloonContent', balloonContent);
-      };
-
-      // Set polygon colors
-      this.setColor = function(strokeColor, fillColor) {
-        this.polygon.options.set('strokeColor', $.yaMaps.colors[strokeColor]);
-        this.polygon.options.set('fillColor', $.yaMaps.colors[fillColor]);
-      };
-
-      // Set opacity
-      this.setOpacity = function(opacity) {
-        this.polygon.options.set('opacity', opacity);
-      };
-
-      // Set line width
-      this.setWidth = function(width) {
-        this.polygon.options.set('strokeWidth', width);
-      };
-
-      // Close balloon
-      this.closeBalloon = function() {
-        this.polygon.balloon.close();
-      };
-
-      // Open balloon
-      this.openBalloon = function() {
-        this.polygon.balloon.open();
-      };
-
-      // Remove polygon from map
-      this.remove = function() {
-        this.getParent().remove(this);
-        this.exportParent();
-      };
-
-      // Set polygon parent
-      this.setParent = function(Parent) {
-        this.parent = Parent;
-      };
-
-      // Get parent
-      this.getParent = function() {
-        return this.parent;
-      };
 
       // Export polygon information
       this.export = function() {
-        var coords = this.polygon.geometry.getCoordinates();
-        var props = this.polygon.properties.getAll();
+        var coords = this.element.geometry.getCoordinates();
+        var props = this.element.properties.getAll();
         return {
           coords: coords,
           params: {
@@ -98,16 +38,17 @@
       };
 
       // Actions for export polygons
-      this.polygon.events
+      this.element.events
         .add('geometrychange', this.exportParent, this)
         .add('propertieschange', this.exportParent, this);
 
       // Polygon initialization parameters
-      this.polygon.properties.set('Polygon', this);
+      this.element.properties.set('element', this);
       this.setColor(properties.strokeColor, properties.fillColor);
       this.setOpacity(properties.opacity);
       this.setWidth(properties.strokeWidth);
     };
+    $.yaMaps.YamapsPolygon.prototype = $.yaMaps.BasePlugin;
 
     // Class for polygons collection
     $.yaMaps.YamapsPolygonCollection = function(options) {
@@ -119,7 +60,7 @@
       this.add = function(Polygon) {
         Polygon.setParent(this);
         this.polygons.push(Polygon);
-        this.elements.add(Polygon.polygon);
+        this.elements.add(Polygon.element);
         return Polygon;
       };
 
@@ -130,7 +71,7 @@
 
       // Remove polygon from map
       this.remove = function(Polygon) {
-        this.elements.remove(Polygon.polygon);
+        this.elements.remove(Polygon.element);
         for (var i in this.polygons) {
           if (this.polygons[i] === Polygon) {
             this.polygons.splice(i, 1);
@@ -244,12 +185,12 @@
           },
           onDeleteClick: function (e) {
             // Delete click
-            e.data.properties.Polygon.remove();
+            e.data.properties.element.remove();
             e.preventDefault();
           },
           onSaveClick: function(e) {
             // Save click
-            var polygon = e.data.properties.Polygon;
+            var polygon = e.data.properties.element;
             // Set opacity
             e.data.properties.opacity = e.data.$opacity.val();
             polygon.setOpacity(e.data.properties.opacity);
