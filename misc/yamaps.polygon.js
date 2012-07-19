@@ -11,9 +11,7 @@
       this.parent = null;
 
       // Actions for export polygons
-      this.element.events
-        .add('geometrychange', this.exportParent, this)
-        .add('propertieschange', this.exportParent, this);
+      this.element.events.add(['geometrychange', 'propertieschange'], this.exportParent, this);
 
       // Polygon initialization parameters
       this.element.properties.set('element', this);
@@ -25,58 +23,17 @@
 
     // Class for polygons collection
     $.yaMaps.YamapsPolygonCollection = function(options) {
-      this.polygons = [];
       this.elements = new ymaps.GeoObjectCollection();
       this.elements.options.set(options);
-
-      // Add new polygon to collection
-      this.add = function(Polygon) {
-        Polygon.setParent(this);
-        this.polygons.push(Polygon);
-        this.elements.add(Polygon.element);
-        return Polygon;
-      };
+      // Selector "storagePrefix + MAP_ID" will be used for export collection data
+      this.storagePrefix = '.field-yamaps-polygons-';
 
       // Create polygon and add to collection
       this.createPolygon = function(geometry, properties, options) {
         return this.add(new $.yaMaps.YamapsPolygon(geometry, properties, options));
       };
-
-      // Remove polygon from map
-      this.remove = function(Polygon) {
-        this.elements.remove(Polygon.element);
-        for (var i in this.polygons) {
-          if (this.polygons[i] === Polygon) {
-            this.polygons.splice(i, 1);
-            break;
-          }
-        }
-      };
-
-      // Each polygons callback
-      this.each = function(callback) {
-        for (var i in this.polygons) {
-          callback(this.polygons[i]);
-        }
-      };
-
-      // Export collection
-      this.export = function() {
-        var polygons = [];
-        this.each(function(Polygon) {
-          polygons.push(Polygon.export());
-        });
-        return polygons;
-      };
-
-      // Export collection to HTML element
-      this.exportToHTML = function() {
-        var elements = this.export();
-        var mapId = this.elements.getMap().container.getElement().parentElement.id;
-        var $storage = $('.field-yamaps-polygons-' + mapId);
-        $storage.val(JSON.stringify(elements));
-      };
     };
+    $.yaMaps.YamapsPolygonCollection.prototype = $.yaMaps.BaseYamapsObjectCollection;
 
     // Edit polygon balloon template
     $.yaMaps.addLayout('yamaps#PolygonBalloonEditLayout',

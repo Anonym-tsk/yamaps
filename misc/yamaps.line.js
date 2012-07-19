@@ -11,9 +11,7 @@
       this.parent = null;
 
       // Actions for export lines
-      this.element.events
-        .add('geometrychange', this.exportParent, this)
-        .add('propertieschange', this.exportParent, this);
+      this.element.events.add(['geometrychange', 'propertieschange'], this.exportParent, this);
 
       // Line initialization parameters
       this.element.properties.set('element', this);
@@ -25,58 +23,17 @@
 
     // Class for lines collection
     $.yaMaps.YamapsLineCollection = function(options) {
-      this.lines = [];
       this.elements = new ymaps.GeoObjectCollection();
       this.elements.options.set(options);
-
-      // Add new line to collection
-      this.add = function(Line) {
-        Line.setParent(this);
-        this.lines.push(Line);
-        this.elements.add(Line.element);
-        return Line;
-      };
+      // Selector "storagePrefix + MAP_ID" will be used for export collection data
+      this.storagePrefix = '.field-yamaps-lines-';
 
       // Create line and add to collection
       this.createLine = function(geometry, properties, options) {
         return this.add(new $.yaMaps.YamapsLine(geometry, properties, options));
       };
-
-      // Remove line from map
-      this.remove = function(Line) {
-        this.elements.remove(Line.element);
-        for (var i in this.lines) {
-          if (this.lines[i] === Line) {
-            this.lines.splice(i, 1);
-            break;
-          }
-        }
-      };
-
-      // Each lines callback
-      this.each = function(callback) {
-        for (var i in this.lines) {
-          callback(this.lines[i]);
-        }
-      };
-
-      // Export collection
-      this.export = function() {
-        var lines = [];
-        this.each(function(Line) {
-          lines.push(Line.export());
-        });
-        return lines;
-      };
-
-      // Export collection to HTML element
-      this.exportToHTML = function() {
-        var elements = this.export();
-        var mapId = this.elements.getMap().container.getElement().parentElement.id;
-        var $storage = $('.field-yamaps-lines-' + mapId);
-        $storage.val(JSON.stringify(elements));
-      };
     };
+    $.yaMaps.YamapsLineCollection.prototype = $.yaMaps.BaseYamapsObjectCollection;
 
     // Edit line balloon template
     $.yaMaps.addLayout('yamaps#LineBalloonEditLayout',

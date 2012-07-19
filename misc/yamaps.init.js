@@ -103,7 +103,7 @@
           }
         };
         if (typeof props.fillColor != 'undefined') {
-          data.fillColor = props.fillColor;
+          data.params.fillColor = props.fillColor;
         }
         return data;
       },
@@ -113,6 +113,34 @@
         if (collection) {
           collection.exportToHTML();
         }
+      }
+    };
+
+    $.yaMaps.BaseYamapsObjectCollection = {
+      // Export collection
+      export: function() {
+        var data = [];
+        this.elements.each(function(element) {
+          data.push(element.properties.get('element').export());
+        });
+        return data;
+      },
+      // Export collection to HTML element
+      exportToHTML: function() {
+        var elements = this.export();
+        var mapId = this.elements.getMap().container.getElement().parentElement.id;
+        var $storage = $(this.storagePrefix + mapId);
+        $storage.val(JSON.stringify(elements));
+      },
+      // Add new line or polygon to collection
+      add: function(Element) {
+        Element.setParent(this);
+        this.elements.add(Element.element);
+        return Element;
+      },
+      // Remove polygon or line from map
+      remove: function(Element) {
+        this.elements.remove(Element.element);
       }
     };
   });
