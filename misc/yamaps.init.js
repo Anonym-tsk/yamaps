@@ -36,7 +36,7 @@
       }
     });
 
-    $.yaMaps.BasePlugin = {
+    $.yaMaps.BaseYamapsObject = {
       // Edit mode for line and polygin
       startEditing: function(active) {
         this.element.editor.startEditing();
@@ -88,6 +88,31 @@
       // Get parent
       getParent: function() {
         return this.parent;
+      },
+      // Export line or polygon
+      export: function() {
+        var coords = this.element.geometry.getCoordinates();
+        var props = this.element.properties.getAll();
+        var data = {
+          coords: coords,
+          params: {
+            strokeWidth: props.strokeWidth,
+            strokeColor: props.strokeColor,
+            balloonContent: props.balloonContent,
+            opacity: props.opacity
+          }
+        };
+        if (typeof props.fillColor != 'undefined') {
+          data.fillColor = props.fillColor;
+        }
+        return data;
+      },
+      // Export all lines or polygons on this map to html container
+      exportParent: function() {
+        var collection = this.getParent();
+        if (collection) {
+          collection.exportToHTML();
+        }
       }
     };
   });

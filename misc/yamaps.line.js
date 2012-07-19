@@ -10,32 +10,6 @@
       this.element = new ymaps.Polyline(geometry, properties, options);
       this.parent = null;
 
-      // Export lines information
-      this.export = function() {
-        var coords = this.element.geometry.getCoordinates();
-        var props = this.element.properties.getAll();
-        return {
-          coords: coords,
-          params: {
-            strokeWidth: props.strokeWidth,
-            strokeColor: props.strokeColor,
-            balloonContent: props.balloonContent,
-            opacity: props.opacity
-          }
-        };
-      };
-
-      // Export all lines on this map to html container
-      this.exportParent = function() {
-        var collection = this.getParent();
-        if (collection) {
-          var mapId = collection.elements.getMap().container.getElement().parentElement.id;
-          var lines = collection.export();
-          var $storage = $('.field-yamaps-lines-' + mapId);
-          $storage.val(JSON.stringify(lines));
-        }
-      };
-
       // Actions for export lines
       this.element.events
         .add('geometrychange', this.exportParent, this)
@@ -47,7 +21,7 @@
       this.setOpacity(properties.opacity);
       this.setWidth(properties.strokeWidth);
     };
-    $.yaMaps.YamapsLine.prototype = $.yaMaps.BasePlugin;
+    $.yaMaps.YamapsLine.prototype = $.yaMaps.BaseYamapsObject;
 
     // Class for lines collection
     $.yaMaps.YamapsLineCollection = function(options) {
@@ -93,6 +67,14 @@
           lines.push(Line.export());
         });
         return lines;
+      };
+
+      // Export collection to HTML element
+      this.exportToHTML = function() {
+        var elements = this.export();
+        var mapId = this.elements.getMap().container.getElement().parentElement.id;
+        var $storage = $('.field-yamaps-lines-' + mapId);
+        $storage.val(JSON.stringify(elements));
       };
     };
 

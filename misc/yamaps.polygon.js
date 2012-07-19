@@ -10,33 +10,6 @@
       this.element = new ymaps.Polygon(geometry, properties, options);
       this.parent = null;
 
-      // Export polygon information
-      this.export = function() {
-        var coords = this.element.geometry.getCoordinates();
-        var props = this.element.properties.getAll();
-        return {
-          coords: coords,
-          params: {
-            strokeWidth: props.strokeWidth,
-            strokeColor: props.strokeColor,
-            fillColor: props.fillColor,
-            balloonContent: props.balloonContent,
-            opacity: props.opacity
-          }
-        };
-      };
-
-      // Export all polygons from current map
-      this.exportParent = function() {
-        var collection = this.getParent();
-        if (collection) {
-          var mapId = collection.elements.getMap().container.getElement().parentElement.id;
-          var polygons = collection.export();
-          var $storage = $('.field-yamaps-polygons-' + mapId);
-          $storage.val(JSON.stringify(polygons));
-        }
-      };
-
       // Actions for export polygons
       this.element.events
         .add('geometrychange', this.exportParent, this)
@@ -48,7 +21,7 @@
       this.setOpacity(properties.opacity);
       this.setWidth(properties.strokeWidth);
     };
-    $.yaMaps.YamapsPolygon.prototype = $.yaMaps.BasePlugin;
+    $.yaMaps.YamapsPolygon.prototype = $.yaMaps.BaseYamapsObject;
 
     // Class for polygons collection
     $.yaMaps.YamapsPolygonCollection = function(options) {
@@ -94,6 +67,14 @@
           polygons.push(Polygon.export());
         });
         return polygons;
+      };
+
+      // Export collection to HTML element
+      this.exportToHTML = function() {
+        var elements = this.export();
+        var mapId = this.elements.getMap().container.getElement().parentElement.id;
+        var $storage = $('.field-yamaps-polygons-' + mapId);
+        $storage.val(JSON.stringify(elements));
       };
     };
 
