@@ -178,3 +178,15 @@ function yamaps_library() {
 
   return $libraries;
 }
+
+/**
+ * Implements hook_help().
+ */
+function yamaps_help($path, $arg) {
+  switch ($path) {
+    case 'admin/help#yamaps':
+      // Return a line-break version of the module README.txt
+      return _filter_autop(file_get_contents( dirname(__FILE__) . "/README.txt"));
+      break;
+  }
+}
