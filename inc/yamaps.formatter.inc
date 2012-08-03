@@ -10,7 +10,7 @@
  */
 function yamaps_field_formatter_info() {
   return array(
-    // Dynamic map formatter
+    // Dynamic map formatter.
     'field_yamaps_formatter_dynamic' => array(
       'label' => t('Dynamic'),
       'field types' => array('field_yamaps'),
@@ -21,7 +21,7 @@ function yamaps_field_formatter_info() {
         'height' => 400,
       ),
     ),
-    // Static map formatter
+    // Static map formatter.
     'field_yamaps_formatter_static' => array(
       'label' => t('Static'),
       'field types' => array('field_yamaps'),
@@ -71,6 +71,7 @@ function yamaps_field_formatter_settings_form($field, $instance, $view_mode, $fo
         '#required' => TRUE,
       );
       break;
+
     case 'field_yamaps_formatter_static':
       $element['traffic'] = array(
         '#title' => t('Show traffic'),
@@ -112,6 +113,7 @@ function yamaps_field_formatter_settings_summary($field, $instance, $view_mode) 
       $summary[] = t('Show traffic: @traffic', array('@traffic' => $settings['traffic'] ? t('Yes') : t('No')));
       $summary[] = t('Map size: @width x @height', array('@width' => $settings['width'], '@height' => $settings['height']));
       break;
+
     case 'field_yamaps_formatter_static':
       $summary[] = t('Show traffic: @traffic', array('@traffic' => $settings['traffic'] ? t('Yes') : t('No')));
       $summary[] = t('Map size: @width x @height', array('@width' => $settings['width'], '@height' => $settings['height']));
@@ -132,11 +134,11 @@ function yamaps_field_formatter_view($entity_type, $entity, $field, $instance, $
     case 'field_yamaps_formatter_dynamic':
       $maps = array();
       foreach ($items as $delta => $item) {
-        // Map id
+        // Map id.
         $id = 'ymap-' . $delta;
-        // Coordinates of map center
+        // Coordinates of map center.
         $coords = drupal_json_decode($item['coords']);
-        // Map initialization parameters
+        // Map initialization parameters.
         $maps[$id] = array(
           'init' => array(
             'center' => $coords['center'],
@@ -152,26 +154,26 @@ function yamaps_field_formatter_view($entity_type, $entity, $field, $instance, $
           'routes' => drupal_json_decode($item['routes']),
           'edit' => FALSE,
         );
-        // Return map container div
+        // Return map container div.
         $element[$delta] = array(
           '#type' => 'html_tag',
           '#tag' => 'div',
           '#attributes' => array(
             'id' => $id,
-            'style' => 'width:' . $settings['width'] . 'px;height:' . $settings['height'] . 'px'
+            'style' => 'width:' . $settings['width'] . 'px;height:' . $settings['height'] . 'px',
           ),
-          '#value' => ''
+          '#value' => '',
         );
       }
 
-      // Adding map to js and load library
+      // Adding map to js and load library.
       drupal_add_js(array('yamaps' => $maps), 'setting');
       drupal_add_library('yamaps', 'yamaps.full');
-
       break;
+
     case 'field_yamaps_formatter_static':
       foreach ($items as $delta => $item) {
-        // Map id and parameters
+        // Map id and parameters.
         $id = 'ymap-' . $delta;
         $coords = drupal_json_decode($item['coords']);
         $params = array();
@@ -180,7 +182,7 @@ function yamaps_field_formatter_view($entity_type, $entity, $field, $instance, $
         $params['z'] = $coords['zoom'];
         $params['size'] = $settings['width'] . ',' . $settings['height'];
 
-        // 2.x to 1.x types
+        // 2.x to 1.x types.
         $map_types = array(
           'yandex#map' => 'map',
           'yandex#satellite' => 'sat',
@@ -193,7 +195,7 @@ function yamaps_field_formatter_view($entity_type, $entity, $field, $instance, $
           $params['l'] .= ',trf';
         }
 
-        // 2.x to 1.x colors
+        // 2.x to 1.x colors.
         $colors21 = array(
           'blue' => 'bl',
           'lightblue' => 'lb',
@@ -208,7 +210,7 @@ function yamaps_field_formatter_view($entity_type, $entity, $field, $instance, $
           'violet' => 'vv',
           'pink' => 'pn',
         );
-        // 2.x to hex colors
+        // 2.x to hex colors.
         $colors = array(
           'blue' => '006cff',
           'lightblue' => '66c7ff',
@@ -234,7 +236,7 @@ function yamaps_field_formatter_view($entity_type, $entity, $field, $instance, $
         }
         $params['pt'] = implode('~', $pt);
 
-        // Lines and polygons
+        // Lines and polygons.
         $pl = array();
         foreach (drupal_json_decode($item['lines']) as $line) {
           $opts = $line['params'];
@@ -267,13 +269,13 @@ function yamaps_field_formatter_view($entity_type, $entity, $field, $instance, $
         }
         $params['pl'] = implode('~', $pl);
 
-        // Return map container div with image
+        // Return map container div with image.
         $element[$delta] = array(
           '#type' => 'html_tag',
           '#tag' => 'div',
           '#attributes' => array(
             'id' => $id,
-            'style' => 'width:' . $settings['width'] . 'px;height:' . $settings['height'] . 'px'
+            'style' => 'width:' . $settings['width'] . 'px;height:' . $settings['height'] . 'px',
           ),
           '#value' => theme('image', array(
             'path' => url($url, array('query' => $params, 'external' => TRUE)),

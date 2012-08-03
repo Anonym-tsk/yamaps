@@ -51,7 +51,7 @@ function yamaps_block_configure($delta = '') {
       '#required' => TRUE,
     );
 
-    // Add elements from default field edit form
+    // Add elements from default field edit form.
     $element = array(
       '#delta' => 'block-' . $delta,
       '#required' => FALSE,
@@ -104,13 +104,13 @@ function yamaps_block_view($delta = '') {
  * @see yamaps_block_view()
  */
 function yamaps_block_content($delta) {
-  // Map id
+  // Map id.
   $id = 'ymap-block-' . $delta;
-  // Map information
+  // Map information.
   $coords = drupal_json_decode(variable_get('yamaps_block_coords', NULL));
   $width = variable_get('yamaps_block_width', 168);
   $height = variable_get('yamaps_block_height', 200);
-  // Map initialization parameters
+  // Map initialization parameters.
   $map = array(
     'init' => array(
       'center' => $coords['center'],
@@ -126,19 +126,19 @@ function yamaps_block_content($delta) {
     'routes' => drupal_json_decode(variable_get('yamaps_block_routes', NULL)),
     'edit' => FALSE,
   );
-  // Adding map to js
+  // Adding map to js.
   drupal_add_js(array('yamaps' => array($id => $map)), 'setting');
-  // Load library
+  // Load library.
   drupal_add_library('yamaps', 'yamaps.full');
 
-  // Return map container div
+  // Return map container div.
   return array(
     '#type' => 'html_tag',
     '#tag' => 'div',
     '#attributes' => array(
       'id' => $id,
-      'style' => 'width:' . $width . 'px;height:' . $height . 'px'
+      'style' => 'width:' . $width . 'px;height:' . $height . 'px',
     ),
-    '#value' => ''
+    '#value' => '',
   );
 }

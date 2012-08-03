@@ -81,10 +81,11 @@
 
     // Ballon actions layout
     $.yaMaps.addLayout('yamaps#ActionsButtons', ymaps.templateLayoutFactory.createClass(
-      '<div class="actions">' +
-      '<a id="deleteButton" href="#">' + Drupal.t('Delete') + '</a>' +
-      '<input id="saveButton" type="button" value="' + Drupal.t('Save') + '"/>' +
-      '</div>'
+      '<div class="actions"><a id="deleteButton" href="#">' +
+        Drupal.t('Delete') +
+        '</a><input id="saveButton" type="button" value="' +
+        Drupal.t('Save') +
+        '"/></div>'
     ));
   });
 })(jQuery);

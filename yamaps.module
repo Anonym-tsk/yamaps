@@ -37,7 +37,7 @@ function yamaps_field_is_empty($item, $field) {
  */
 function yamaps_element_info() {
   $elements = array();
-  $elements['yamaps_field'] =  array(
+  $elements['yamaps_field'] = array(
     '#input' => TRUE,
     '#process' => array('yamaps_field_process'),
     '#theme_wrappers' => array('form_element'),
@@ -50,48 +50,48 @@ function yamaps_element_info() {
  * @see yamaps_element_info()
  */
 function yamaps_field_process($element, $form_state, $complete_form) {
-  // Map information
+  // Map information.
   $coords = isset($element['#value']['coords']) ? $element['#value']['coords'] : NULL;
-  $coordsArray = drupal_json_decode($coords);
+  $coords_array = drupal_json_decode($coords);
   $type = isset($element['#value']['type']) ? $element['#value']['type'] : 'yandex#map';
   $placemarks = isset($element['#value']['placemarks']) ? $element['#value']['placemarks'] : NULL;
-  $placemarksArray = drupal_json_decode($placemarks);
+  $placemarks_array = drupal_json_decode($placemarks);
   $lines = isset($element['#value']['lines']) ? $element['#value']['lines'] : NULL;
-  $linesArray = drupal_json_decode($lines);
+  $lines_array = drupal_json_decode($lines);
   $polygons = isset($element['#value']['polygons']) ? $element['#value']['polygons'] : NULL;
-  $polygonsArray = drupal_json_decode($polygons);
+  $polygons_array = drupal_json_decode($polygons);
   $routes = isset($element['#value']['routes']) ? $element['#value']['routes'] : NULL;
-  $routesArray = drupal_json_decode($routes);
+  $routes_array = drupal_json_decode($routes);
 
-  // Unique map id
+  // Unique map id.
   $id = 'ymap-' . $element['#delta'] . '-edit';
-  // Map initialization parameters
+  // Map initialization parameters.
   $map = array(
     'init' => array(
-      'center' => $coordsArray['center'],
-      'zoom' => $coordsArray['zoom'],
+      'center' => $coords_array['center'],
+      'zoom' => $coords_array['zoom'],
       'type' => $type,
       'behaviors' => array('scrollZoom', 'dblClickZoom', 'drag'),
     ),
     'controls' => 1,
     'traffic' => 0,
-    'placemarks' => $placemarksArray,
-    'lines' => $linesArray,
-    'polygons' => $polygonsArray,
-    'routes' => $routesArray,
+    'placemarks' => $placemarks_array,
+    'lines' => $lines_array,
+    'polygons' => $polygons_array,
+    'routes' => $routes_array,
     'edit' => TRUE,
   );
 
-  // Add information about this map to js
+  // Add information about this map to js.
   drupal_add_js(array('yamaps' => array($id => $map)), 'setting');
-  // Load library
+  // Load library.
   drupal_add_library('yamaps', 'yamaps.full');
 
-  // Map container
+  // Map container.
   $element['map'] = array(
-    '#markup' => '<div id="' . $id . '" style="width:100%;height:400px"></div>'
+    '#markup' => '<div id="' . $id . '" style="width:100%;height:400px"></div>',
   );
-  // Hidden elements to saving map information
+  // Hidden elements to saving map information.
   $element['coords'] = array(
     '#type' => 'hidden',
     '#title' => t('Coordinates'),
@@ -130,7 +130,7 @@ function yamaps_field_process($element, $form_state, $complete_form) {
     '#attributes' => array('class' => array('field-yamaps-routes-' . $id)),
   );
 
-  // Map description
+  // Map description.
   $element['#description'] = '<div class="yamaps-terms">' . l(
     t('Terms of service «API Yandex.Maps»'),
     'http://legal.yandex.ru/maps_api/',
@@ -144,19 +144,20 @@ function yamaps_field_process($element, $form_state, $complete_form) {
  * Implements hook_library().
  */
 function yamaps_library() {
-  // Users language
+  // Users language.
   global $language;
-  // Module path
+  // Module path.
   $path = drupal_get_path('module', 'yamaps') . '/misc/';
-  // Weight counter
+  // Weight counter.
   $w = 10;
+  // API url.
+  $api_url = 'http://api-maps.yandex.ru/2.0/?load=package.full&lang=ru-RU&wizard=Drupal_yamaps_' . $language->language;
 
   $libraries['yamaps.full'] = array(
     'title' => 'Yandex maps. Edit mode.',
     'version' => '2.x',
     'js' => array(
-      'http://api-maps.yandex.ru/2.0/?load=package.full&lang=ru-RU&wizard=Drupal_yamaps_' . $language->language =>
-        array('type' => 'external', 'scope' => 'footer', 'weight' => $w++),
+      $api_url => array('type' => 'external', 'scope' => 'footer', 'weight' => $w++),
       $path . 'yamaps.init.js' => array('scope' => 'footer', 'weight' => $w++),
       $path . 'yamaps.layouts.js' => array('scope' => 'footer', 'weight' => $w++),
       $path . 'yamaps.placemark.js' => array('scope' => 'footer', 'weight' => $w++),

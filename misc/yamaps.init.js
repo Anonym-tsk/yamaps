@@ -7,9 +7,12 @@
   ymaps.ready(function() {
     $.extend({
       yaMaps: {
-        maps: {}, // maps on page
-        _mapTools: [], // map tools
-        _layouts: {}, // Layouts
+        // maps on page.
+        maps: {},
+        // map tools
+        _mapTools: [],
+        // Layouts
+        _layouts: {},
         addMapTools: function(button) {
           this._mapTools.push(button);
         },
