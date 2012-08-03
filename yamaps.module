@@ -157,7 +157,11 @@ function yamaps_library() {
     'title' => 'Yandex maps. Edit mode.',
     'version' => '2.x',
     'js' => array(
-      $api_url => array('type' => 'external', 'scope' => 'footer', 'weight' => $w++),
+      $api_url => array(
+        'type' => 'external',
+        'scope' => 'footer',
+        'weight' => $w++,
+      ),
       $path . 'yamaps.init.js' => array('scope' => 'footer', 'weight' => $w++),
       $path . 'yamaps.layouts.js' => array('scope' => 'footer', 'weight' => $w++),
       $path . 'yamaps.placemark.js' => array('scope' => 'footer', 'weight' => $w++),

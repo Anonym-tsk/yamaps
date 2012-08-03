@@ -18,7 +18,7 @@
   content: ":";
 }
 .ymaps-map .yamaps-balloon input {
-  border: 1px solid #CCC;
+  border: 1px solid #ccc;
   border-radius: 3px;
   font-size: 12px;
   margin: 0;
@@ -38,7 +38,7 @@
   float: left;
 }
 .ymaps-map .yamaps-balloon .actions #saveButton {
-  background: #FFF;
+  background: #fff;
   float: right;
   height: 20px;
   line-height: 12px;
